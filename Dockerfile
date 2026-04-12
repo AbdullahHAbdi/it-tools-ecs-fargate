@@ -20,6 +20,13 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 RUN addgroup -S appgroup && adduser -S nonrootuser -G appgroup
 
+RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx && \
+    chown -R nonrootuser:appgroup /var/cache/nginx /var/run /var/log/nginx && \
+    chown -R nonrootuser:appgroup /usr/share/nginx/html
+    
+RUN touch /var/run/nginx.pid && \
+    chown nonrootuser:appgroup /var/run/nginx.pid
+
 USER nonrootuser
 
 EXPOSE 80
