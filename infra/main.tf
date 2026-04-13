@@ -17,3 +17,10 @@ module "security_groups" {
   container_port = var.container_port
   tags           = var.tags
 }
+
+module "ecr" {
+  source = "./modules/ecr"
+
+  project_name = var.project_name
+  tags         = var.tags
+}
