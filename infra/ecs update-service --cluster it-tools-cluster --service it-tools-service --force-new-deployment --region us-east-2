@@ -1,0 +1,219 @@
+{
+    "service": {
+        "serviceArn": "arn:aws:ecs:us-east-2:904962391090:service/it-tools-cluster/it-tools-service",
+        "serviceName": "it-tools-service",
+        "clusterArn": "arn:aws:ecs:us-east-2:904962391090:cluster/it-tools-cluster",
+        "loadBalancers": [
+            {
+                "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-2:904962391090:targetgroup/it-tools-tg/138ae6fadd1d787e",
+                "containerName": "it-tools",
+                "containerPort": 8080
+            }
+        ],
+        "serviceRegistries": [],
+        "status": "ACTIVE",
+        "desiredCount": 1,
+        "runningCount": 0,
+        "pendingCount": 0,
+        "launchType": "FARGATE",
+        "platformVersion": "LATEST",
+        "platformFamily": "Linux",
+        "taskDefinition": "arn:aws:ecs:us-east-2:904962391090:task-definition/it-tools-task:7",
+        "deploymentConfiguration": {
+            "deploymentCircuitBreaker": {
+                "enable": false,
+                "rollback": false
+            },
+            "maximumPercent": 200,
+            "minimumHealthyPercent": 100,
+            "strategy": "ROLLING",
+            "bakeTimeInMinutes": 0
+        },
+        "deployments": [
+            {
+                "id": "ecs-svc/5642432362016858514",
+                "status": "PRIMARY",
+                "taskDefinition": "arn:aws:ecs:us-east-2:904962391090:task-definition/it-tools-task:7",
+                "desiredCount": 0,
+                "pendingCount": 0,
+                "runningCount": 0,
+                "failedTasks": 0,
+                "createdAt": "2026-04-14T16:34:03.910000-04:00",
+                "updatedAt": "2026-04-14T16:34:03.910000-04:00",
+                "launchType": "FARGATE",
+                "platformVersion": "1.4.0",
+                "platformFamily": "Linux",
+                "networkConfiguration": {
+                    "awsvpcConfiguration": {
+                        "subnets": [
+                            "subnet-089a7df55e0b13a4c",
+                            "subnet-0d64e7a06da7203c0"
+                        ],
+                        "securityGroups": [
+                            "sg-08b15615e74f9ce12"
+                        ],
+                        "assignPublicIp": "DISABLED"
+                    }
+                },
+                "rolloutState": "IN_PROGRESS",
+                "rolloutStateReason": "ECS deployment ecs-svc/5642432362016858514 in progress."
+            },
+            {
+                "id": "ecs-svc/4661683826744696667",
+                "status": "ACTIVE",
+                "taskDefinition": "arn:aws:ecs:us-east-2:904962391090:task-definition/it-tools-task:7",
+                "desiredCount": 1,
+                "pendingCount": 0,
+                "runningCount": 0,
+                "failedTasks": 8,
+                "createdAt": "2026-04-14T15:59:03.015000-04:00",
+                "updatedAt": "2026-04-14T16:09:33.542000-04:00",
+                "launchType": "FARGATE",
+                "platformVersion": "1.4.0",
+                "platformFamily": "Linux",
+                "networkConfiguration": {
+                    "awsvpcConfiguration": {
+                        "subnets": [
+                            "subnet-089a7df55e0b13a4c",
+                            "subnet-0d64e7a06da7203c0"
+                        ],
+                        "securityGroups": [
+                            "sg-08b15615e74f9ce12"
+                        ],
+                        "assignPublicIp": "DISABLED"
+                    }
+                },
+                "rolloutState": "IN_PROGRESS",
+                "rolloutStateReason": "ECS deployment ecs-svc/4661683826744696667 in progress."
+            }
+        ],
+        "roleArn": "arn:aws:iam::904962391090:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+        "events": [
+            {
+                "id": "c2382fdd-be74-442e-b63e-b77aa450e690",
+                "createdAt": "2026-04-14T16:32:30.413000-04:00",
+                "message": "(service it-tools-service) has started 1 tasks: (task e17632a345c647ffb857b046ee586386)."
+            },
+            {
+                "id": "44a33056-3487-4c70-8333-303acb2d9ca3",
+                "createdAt": "2026-04-14T16:27:37.261000-04:00",
+                "message": "(service it-tools-service) was unable to place a task. Reason: CannotPullContainerError: pull image manifest has been retried 7 time(s): failed to resolve ref 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: not found."
+            },
+            {
+                "id": "cfaf3dea-2b7f-4c79-b0c3-4f0b4e895b64",
+                "createdAt": "2026-04-14T16:26:01.039000-04:00",
+                "message": "(service it-tools-service) has started 1 tasks: (task 05b80ee6ce5449759be0dc2ec6fa65a1)."
+            },
+            {
+                "id": "d19913ba-648a-4b3e-9342-2253e8762147",
+                "createdAt": "2026-04-14T16:21:08.370000-04:00",
+                "message": "(service it-tools-service) was unable to place a task. Reason: CannotPullContainerError: pull image manifest has been retried 7 time(s): failed to resolve ref 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: not found."
+            },
+            {
+                "id": "56486ba8-a52d-4f34-9ace-358bbe6090c3",
+                "createdAt": "2026-04-14T16:19:31.093000-04:00",
+                "message": "(service it-tools-service) has started 1 tasks: (task a17987eb9bb94049a4cb09a75d9ac6e2)."
+            },
+            {
+                "id": "650b7cec-b36c-4354-a501-d77756801f83",
+                "createdAt": "2026-04-14T16:14:23.642000-04:00",
+                "message": "(service it-tools-service) was unable to place a task. Reason: CannotPullContainerError: pull image manifest has been retried 7 time(s): failed to resolve ref 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: not found."
+            },
+            {
+                "id": "01d35a08-8456-455c-908c-f055dc6f5898",
+                "createdAt": "2026-04-14T16:12:59.292000-04:00",
+                "message": "(service it-tools-service) has started 1 tasks: (task 5c1efa45ac0b472e885b548a45b896a7)."
+            },
+            {
+                "id": "070b4105-3525-4d94-9e81-c226d76f7909",
+                "createdAt": "2026-04-14T16:12:26.735000-04:00",
+                "message": "(service it-tools-service) was unable to place a task. Reason: CannotPullContainerError: pull image manifest has been retried 7 time(s): failed to resolve ref 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: not found."
+            },
+            {
+                "id": "59381363-5c6f-4c7b-aef9-2b25ed5d52f8",
+                "createdAt": "2026-04-14T16:11:01.900000-04:00",
+                "message": "(service it-tools-service) has started 1 tasks: (task 095fa7e7dc7042f587ccc0a71ce0647f)."
+            },
+            {
+                "id": "268b9089-011b-4575-adab-94ba57421a7c",
+                "createdAt": "2026-04-14T16:10:32.108000-04:00",
+                "message": "(service it-tools-service) was unable to place a task. Reason: CannotPullContainerError: pull image manifest has been retried 7 time(s): failed to resolve ref 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: not found."
+            },
+            {
+                "id": "a22cdbfd-a4b3-4e6d-be6c-8359bb18d8e5",
+                "createdAt": "2026-04-14T16:09:08.759000-04:00",
+                "message": "(service it-tools-service) has started 1 tasks: (task 147c8a69341d4d13a542b2ec9e32b072)."
+            },
+            {
+                "id": "af3ae86f-495f-4027-9050-b552579a5870",
+                "createdAt": "2026-04-14T16:08:36.921000-04:00",
+                "message": "(service it-tools-service) was unable to place a task. Reason: CannotPullContainerError: pull image manifest has been retried 7 time(s): failed to resolve ref 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: not found."
+            },
+            {
+                "id": "4dd11f8a-46b1-4b80-948a-7725496311f1",
+                "createdAt": "2026-04-14T16:07:03.810000-04:00",
+                "message": "(service it-tools-service) has started 1 tasks: (task 60d314a21235433fa4d52fd9b006bc00)."
+            },
+            {
+                "id": "05706cc7-95dc-410e-ad2d-afeff32253a1",
+                "createdAt": "2026-04-14T16:06:32.172000-04:00",
+                "message": "(service it-tools-service) was unable to place a task. Reason: CannotPullContainerError: pull image manifest has been retried 7 time(s): failed to resolve ref 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: not found."
+            },
+            {
+                "id": "10e76946-7db6-4e40-b39e-58493f568e02",
+                "createdAt": "2026-04-14T16:05:05.042000-04:00",
+                "message": "(service it-tools-service) has started 1 tasks: (task ca24dba1f6214f0bb3ed80ff7db94c1e)."
+            },
+            {
+                "id": "2db7df43-5f49-4664-891b-eddf10518b41",
+                "createdAt": "2026-04-14T16:04:33.017000-04:00",
+                "message": "(service it-tools-service) was unable to place a task. Reason: CannotPullContainerError: pull image manifest has been retried 7 time(s): failed to resolve ref 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: 904962391090.dkr.ecr.us-east-2.amazonaws.com/it-tools-app:latest: not found."
+            },
+            {
+                "id": "9fc1ad07-3abe-43a4-983e-5c0275242fed",
+                "createdAt": "2026-04-14T15:59:26.633000-04:00",
+                "message": "(service it-tools-service) has started 1 tasks: (task 21b792f9308e4bfa9ced891e937d87bb)."
+            }
+        ],
+        "createdAt": "2026-04-14T15:59:03.015000-04:00",
+        "currentServiceRevisions": [
+            {
+                "arn": "arn:aws:ecs:us-east-2:904962391090:service-revision/it-tools-cluster/it-tools-service/5642432362016858514",
+                "requestedTaskCount": 0,
+                "runningTaskCount": 0,
+                "pendingTaskCount": 0
+            },
+            {
+                "arn": "arn:aws:ecs:us-east-2:904962391090:service-revision/it-tools-cluster/it-tools-service/4661683826744696667",
+                "requestedTaskCount": 1,
+                "runningTaskCount": 0,
+                "pendingTaskCount": 0
+            }
+        ],
+        "placementConstraints": [],
+        "placementStrategy": [],
+        "networkConfiguration": {
+            "awsvpcConfiguration": {
+                "subnets": [
+                    "subnet-089a7df55e0b13a4c",
+                    "subnet-0d64e7a06da7203c0"
+                ],
+                "securityGroups": [
+                    "sg-08b15615e74f9ce12"
+                ],
+                "assignPublicIp": "DISABLED"
+            }
+        },
+        "healthCheckGracePeriodSeconds": 120,
+        "schedulingStrategy": "REPLICA",
+        "deploymentController": {
+            "type": "ECS"
+        },
+        "createdBy": "arn:aws:iam::904962391090:user/AbdullahAWS",
+        "enableECSManagedTags": false,
+        "propagateTags": "NONE",
+        "enableExecuteCommand": false,
+        "availabilityZoneRebalancing": "ENABLED",
+        "resourceManagementType": "CUSTOMER"
+    }
+}
