@@ -70,6 +70,7 @@ module "ecs" {
 
   project_name          = var.project_name
   aws_region            = var.aws_region
+  vpc_id                = module.vpc.vpc_id
   private_subnet_ids    = module.vpc.private_subnet_ids
   ecs_security_group_id = module.security_groups.ecs_security_group_id
   target_group_arn      = module.alb.target_group_arn
