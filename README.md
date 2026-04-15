@@ -12,7 +12,7 @@ This project takes IT Tools, an open-source developer utility app, and deploys i
 
 ## Architecture
 
-![Architecture Diagram](docs/images/architecture-diagram.png)
+![Architecture Diagram](images/architecture-diagram.png)
 
 The traffic flow works as follows: a user's browser resolves `tm.abdullahabdi.com` via Cloudflare DNS, which points to the ALB DNS name. The ALB sits in public subnets and terminates TLS using an ACM certificate. It then forwards requests to ECS Fargate tasks running in private subnets on port 8080. The tasks pull their container image from ECR on startup. A regional NAT Gateway handles outbound internet access from private subnets.
 
@@ -39,7 +39,7 @@ The traffic flow works as follows: a user's browser resolves `tm.abdullahabdi.co
 
 ## Demo
 
-![IT Tools Demo](docs/images/it-tools-demo.gif)
+![IT Tools Demo](images/it-tools-demo.gif)
 
 ---
 
@@ -113,11 +113,11 @@ All pipelines authenticate with AWS using OIDC; no static AWS credentials are st
 
 ### Pipeline Screenshots
 
-![App Pipeline](docs/images/build-and-push-to-ecr.png)
+![App Pipeline](images/build-and-push-to-ecr.png)
 
-![Terraform Deploy Pipeline](docs/images/terraform-deploy.png)
+![Terraform Deploy Pipeline](images/terraform-deploy.png)
 
-![Terraform Destroy Pipeline](docs/images/terraform-destroy.png)
+![Terraform Destroy Pipeline](images/terraform-destroy.png)
 
 ---
 
@@ -125,22 +125,25 @@ All pipelines authenticate with AWS using OIDC; no static AWS credentials are st
 
 
 **ECS Service - Running Tasks**
-![ECS Running](docs/images/ecs-service-running.png)
+![ECS Running](images/ecs-service-running.png)
 
 **ALB - Active Status**
-![ALB Active](docs/images/alb-active-status.png)
+![ALB Active](images/alb-active-status.png)
+
+**Target Group - Healthy Targets**
+![Target Group](images/tg-healthy-target.png)
 
 **ECR - Image Pushed**
-![ECR Image](docs/images/ecr-image-pushed.png)
+![ECR Image](images/ecr-image-pushed.png)
 
 **ACM Certificate - Issued**
-![ACM Certificate](docs/images/acm-certificate-success.png)
+![ACM Certificate](images/acm-certificate-success.png)
 
 **Terraform State in S3**
-![S3 State](docs/images/terraform-state-file-s3.png)
+![S3 State](images/terraform-state-file-s3.png)
 
 **HTTPS Certificate in Browser**
-![Browser Certificate](docs/images/website-certificate.png)
+![Browser Certificate](images/website-certificate.png)
 
 ---
 
