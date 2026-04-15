@@ -12,7 +12,7 @@ This project takes IT Tools, an open-source developer utility app, and deploys i
 
 ## Architecture
 
-![Architecture Diagram](images/architecture-diagram.png)
+![Architecture Diagram](images/architecture-diagram.gif)
 
 The traffic flow works as follows: a user's browser resolves `tm.abdullahabdi.com` via Cloudflare DNS, which points to the ALB DNS name. The ALB sits in public subnets and terminates TLS using an ACM certificate. It then forwards requests to ECS Fargate tasks running in private subnets on port 8080. The tasks pull their container image from ECR on startup. A regional NAT Gateway handles outbound internet access from private subnets.
 
