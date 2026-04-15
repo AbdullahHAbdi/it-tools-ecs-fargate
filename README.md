@@ -101,6 +101,14 @@ Then open [http://localhost:8080](http://localhost:8080) in your browser.
 
 ---
 
+## Docker Image Optimization
+
+The Dockerfile uses a multi-stage build. A Node.js builder stage compiles the TypeScript/Vue source into static files, then only the compiled `dist/` output is copied into a lightweight `nginx:stable-alpine` runtime image. Node.js, pnpm, and all build tooling are discarded entirely, bringing the final content size down to **34MB**.
+
+Additional hardening: non-root user, custom nginx config on port 8080, and `.dockerignore` to exclude `node_modules` from the build context.
+
+---
+
 ## CI/CD Pipelines
 
 All pipelines authenticate with AWS using OIDC; no static AWS credentials are stored anywhere. GitHub Actions assumes an IAM role via a short-lived token that expires when the job finishes.
@@ -124,26 +132,63 @@ All pipelines authenticate with AWS using OIDC; no static AWS credentials are st
 ## AWS Console Screenshots
 
 
-**ECS Service - Running Tasks**
+**ECS Service — Running Tasks**
+
 ![ECS Running](images/ecs-service-running.png)
 
-**ALB - Active Status**
+---
+
+**ALB — Active Status**
+
 ![ALB Active](images/alb-active-status.png)
 
-**Target Group - Healthy Targets**
+---
+
+**Target Group — Healthy Targets**
+
 ![Target Group](images/tg-healthy-target.png)
 
-**ECR - Image Pushed**
+---
+
+**ECR — Image Pushed**
+
 ![ECR Image](images/ecr-image-pushed.png)
 
-**ACM Certificate - Issued**
+---
+
+**ACM Certificate — Issued**
+
 ![ACM Certificate](images/acm-certificate-success.png)
 
+---
+
 **Terraform State in S3**
+
 ![S3 State](images/terraform-state-file-s3.png)
 
+---
+
 **HTTPS Certificate in Browser**
+
 ![Browser Certificate](images/website-certificate.png)
+
+---
+
+**App Pipeline — Build and Push**
+
+![App Pipeline](images/build-and-push-to-ecr.png)
+
+---
+
+**Terraform Deploy Pipeline**
+
+![Terraform Deploy](images/terraform-deploy.png)
+
+---
+
+**Terraform Destroy Pipeline**
+
+![Terraform Destroy](images/terraform-destroy.png)
 
 ---
 
