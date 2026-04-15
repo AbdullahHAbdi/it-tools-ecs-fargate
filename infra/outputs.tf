@@ -34,6 +34,6 @@ output "certificate_arn" {
 }
 
 output "ecr_repository_url" {
-  description = "ecr repository url"  
+  description = "ecr repository url"
   value       = module.ecr.ecr_repository_url
 }
