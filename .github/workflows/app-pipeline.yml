@@ -54,9 +54,29 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Deploy to ECS
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
+
+          task_def=$(aws ecs describe-task-definition \
+            --task-definition it-tools-task \
+            --query taskDefinition \
+            --region $AWS_REGION)
+
+          new_task_def=$(echo $task_def | jq \
+            --arg IMAGE "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" \
+            '.containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
+
+          new_revision=$(aws ecs register-task-definition \
+            --cli-input-json "$new_task_def" \
+            --query taskDefinition.taskDefinitionArn \
+            --output text \
+            --region $AWS_REGION)
+
           aws ecs update-service \
             --cluster it-tools-cluster \
             --service it-tools-service \
+            --task-definition $new_revision \
             --force-new-deployment \
-            --region ${{ secrets.AWS_REGION }}
+            --region $AWS_REGION
