@@ -4,6 +4,12 @@
 
 ---
 
+## Demo
+
+![IT Tools Demo](images/it-tools-demo.gif)
+
+---
+
 ## Overview
 
 This project takes IT Tools, an open-source developer utility app, and deploys it as a production-grade workload on AWS. The infrastructure follows a real-world pattern: a containerized app served behind an Application Load Balancer with HTTPS termination, running on ECS Fargate in private subnets, with all infrastructure managed as code using Terraform and deployments automated through GitHub Actions.
@@ -33,13 +39,8 @@ The traffic flow works as follows: a user's browser resolves `tm.abdullahabdi.co
 | Infrastructure as Code | Terraform (modular) |
 | State Management | S3 backend with native locking |
 | CI/CD | GitHub Actions with OIDC |
+| Security Scanning | Trivy (container), Checkov (IaC) |
 | Logs | Amazon CloudWatch |
-
----
-
-## Demo
-
-![IT Tools Demo](images/it-tools-demo.gif)
 
 ---
 
@@ -48,56 +49,102 @@ The traffic flow works as follows: a user's browser resolves `tm.abdullahabdi.co
 ```
 .
 ├── app/
+├── bootstrap/
+│   └── bootstrap.sh
 ├── Dockerfile
 ├── nginx.conf
 ├── infra/
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── outputs.tf
-│   ├── provider.tf
-│   └── modules/
-│       ├── vpc/
-│       ├── security_groups/
-│       ├── ecr/
-│       ├── iam/
-│       ├── acm/
-│       ├── route53/
-│       ├── alb/
-│       └── ecs/
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   ├── provider.tf
+│   └── modules/
+│       ├── vpc/
+│       ├── security_groups/
+│       ├── iam/
+│       ├── acm/
+│       ├── route53/
+│       ├── alb/
+│       └── ecs/
 ├── .github/
-│   └── workflows/
-│       ├── app.yml
-│       ├── terraform-deploy.yml
-│       └── terraform-destroy.yml
+│   └── workflows/
+│       ├── app-pipeline.yml
+│       ├── terraform-deploy.yml
+│       └── terraform-destroy.yml
 ├── images/
+├── .pre-commit-config.yaml
 ├── .dockerignore
 ├── .gitignore
 └── README.md
+
 ```
+
+---
+
+## Prerequisites
+
+Before you begin you need the following installed:
+
+- [AWS CLI](https://aws.amazon.com/cli/) configured with appropriate credentials
+- [Terraform](https://www.terraform.io/) >= 1.12.0
+- [Docker](https://www.docker.com/)
+- [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/)
+- An AWS account
+- A domain managed through Cloudflare
+
+---
+
+## Bootstrap (Run Once)
+
+Before the pipelines can run, three prerequisites need to exist: an S3 bucket for Terraform state, an ECR repository for Docker images, and an OIDC identity provider with an IAM role for GitHub Actions authentication.
+
+Run the bootstrap script once from your terminal:
+
+```
+cd bootstrap
+chmod +x bootstrap.sh
+./bootstrap.sh
+
+```
+
+The script creates:
+- S3 state bucket with versioning and public access blocked
+- ECR repository with image scanning enabled
+- OIDC identity provider for GitHub Actions
+- IAM role with trust policy scoped to this repository
+
+After it completes, add these two secrets to your GitHub repository under Settings -> Secrets -> Actions:
+
+| Secret | Value |
+|---|---|
+| `AWS_ROLE_ARN` | Printed at the end of the bootstrap script |
+| `AWS_REGION` | `us-east-2` |
 
 ---
 
 ## Local Setup
 
-### Prerequisites
-
-Make sure you have Docker, Node.js, and pnpm installed locally.
-
 ### Run with Docker
 
-```bash
-# Clone the repository
-git clone git@github.com:AbdullahHAbdi/<your-repo-name>.git
-cd <your-repo-name>
+```
+git clone git@github.com:AbdullahHAbdi/it-tools-ecs-fargate.git
+cd it-tools-ecs-fargate
 
-# Build the image
 docker build -t it-tools .
 
-# Run locally
 docker run -p 8080:8080 it-tools
+
 ```
 
 Then open [http://localhost:8080](http://localhost:8080) in your browser.
+
+---
+
+## Docker Image Optimization
+
+The Dockerfile uses a multi-stage build to keep the final image as small as possible. A Node.js builder stage compiles the TypeScript/Vue source into static files, then only the compiled `dist/` output is copied into a lightweight `nginx:stable-alpine` runtime image. Node.js, pnpm, and all build tooling are discarded entirely, bringing the final content size down to **34MB**.
+
+Additional hardening: non-root user, custom nginx config on port 8080, and `.dockerignore` to exclude `node_modules` from the build context.
 
 ---
 
@@ -176,13 +223,39 @@ All pipelines authenticate with AWS using OIDC; no static AWS credentials are st
 
 ---
 
-## Future Improvements
+## Architecture Decisions
 
-- Add Trivy container image scanning to the app pipeline for vulnerability detection
-- Add a pre-commit config with `terraform fmt` and `tflint` hooks to catch issues before pushing
-- Move to a multi-environment setup (staging and production) using Terragrunt
-- Add auto-scaling to the ECS service based on CPU/memory CloudWatch alarms
-- Switch nginx to rootless mode to fully eliminate the root process requirement
+**Fargate over EC2**
+
+* No EC2 instances to patch or manage. AWS handles the underlying infrastructure, allowing focus on the application and deployment pipeline.
+
+**Private subnets for ECS**
+
+* ECS tasks run in private subnets with no direct internet access. All inbound traffic must go through the ALB, and outbound traffic routes through the NAT Gateway.
+
+**S3 native locking over DynamoDB**
+
+* AWS introduced native S3 state locking which eliminates the need for a separate DynamoDB table, simplifying the bootstrap requirements.
+
+**OIDC over static credentials**
+
+* GitHub Actions uses OIDC to assume an IAM role with short-lived tokens instead of storing long-lived AWS access keys as secrets.
+
+**Single NAT Gateway**
+
+* A single regional NAT Gateway serves both private subnets. In production you would use one per AZ for high availability, but for this project cost optimization takes priority.
+
+**Immutable ECR tags**
+
+* Images are tagged with the git commit SHA and ECR is configured with immutable tags, ensuring every deployment is traceable and images cannot be accidentally overwritten.
 
 ---
 
+## Future Improvements
+
+- Move to a multi-environment setup (staging and production) using Terragrunt
+- Add auto-scaling to the ECS service based on CPU/memory CloudWatch alarms
+- Add a Terraform plan pipeline that runs on pull requests and posts the plan as a PR comment
+- Add a docker-compose.yml for easier local development
+
+---
