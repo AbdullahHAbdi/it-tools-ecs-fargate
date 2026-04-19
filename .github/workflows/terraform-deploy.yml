@@ -37,6 +37,13 @@ jobs:
         working-directory: ./infra
         run: terraform fmt -check
 
+      - name: Run Checkov security scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ./infra
+          framework: terraform
+          soft_fail: true
+
       - name: Terraform Init
         working-directory: ./infra
         run: terraform init -input=false
